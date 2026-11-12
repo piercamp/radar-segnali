@@ -1,0 +1,45 @@
+name: radar-serale
+
+on:
+  schedule:
+    # 22:30 UTC dal lunedì al venerdì = 23:30 ora italiana (inverno), 00:30 (estate); dopo la chiusura USA
+    - cron: "30 22 * * 1-5"
+  workflow_dispatch: {}   # pulsante "Run workflow" per lanciarlo a mano
+
+permissions:
+  contents: write
+
+concurrency:
+  group: radar
+  cancel-in-progress: false
+
+jobs:
+  scansione:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Installa dipendenze
+        run: pip install -r requirements.txt
+
+      - name: Collaudo (dati simulati)
+        run: python -m pytest -q tests
+
+      - name: Scansione del mercato
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: python -m radar.run
+
+      - name: Salva i risultati nel repository
+        run: |
+          git config user.name "radar-bot"
+          git config user.email "radar-bot@users.noreply.github.com"
+          git add output
+          git commit -m "Radar: seduta $(date -u +%Y-%m-%d)" || echo "Nessuna novità"
+          git push

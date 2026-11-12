@@ -1,0 +1,38 @@
+# Radar segnali USA - parametri del modello (modificabili senza toccare il codice)
+
+universo:
+  borse: [NYSE, Nasdaq]
+  prezzo_minimo_usd: 5
+  controvalore_medio_20g_min_usd: 20000000   # liquidità minima: 20 milioni USD/giorno
+  sedute_minime_storico: 220
+
+fase2:
+  candidati_da_analizzare: 60   # migliori per punteggio tecnico che passano all'analisi completa
+  candidati_in_uscita: 30       # quanti finiscono nel file letto da Claude
+
+pesi:                           # totale 100
+  trend: 25
+  momentum: 25
+  accumulo: 15
+  insider: 15
+  fondamentali: 15
+  short: 5
+
+insider:
+  giorni: 30
+  soglia_importo_usd: 100000
+  importo_forte_usd: 1000000
+
+veto:
+  giorni_lavorativi_a_trimestrale: 3
+
+idoneita:
+  completezza_minima: 0.85      # sotto questa quota di dati disponibili: N/D, nessuna allerta
+  copertura_minima_mercato: 0.80 # se meno dell'80% dei titoli ha prezzi validi, la seduta è marcata come incompleta
+
+volatilita:
+  atr_alta_pct: 0.05            # oltre il 5% di escursione media giornaliera: flag "volatilità alta"
+
+tracciamento:
+  segnali_registrati_per_seduta: 10
+  orizzonti_giorni: [1, 5, 20]
