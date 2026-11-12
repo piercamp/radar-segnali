@@ -1,13 +1,13 @@
 {
-  "generato_utc": "2026-11-12T17:52+00:00",
+  "generato_utc": "2026-11-12T23:22+00:00",
   "seduta": "2026-11-12",
   "seduta_completa": true,
-  "titoli_universo": 6410,
-  "titoli_con_prezzi_validi": 5931,
-  "copertura_prezzi": 0.925,
-  "titoli_liquidi": 2040,
+  "titoli_universo": 6412,
+  "titoli_con_prezzi_validi": 5935,
+  "copertura_prezzi": 0.926,
+  "titoli_liquidi": 2052,
   "candidati_analizzati": 60,
-  "candidati_idonei": 56,
+  "candidati_idonei": 57,
   "fonti_ko": {
     "insider_N/D": 0,
     "short_N/D": 0
