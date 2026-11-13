@@ -25,7 +25,9 @@ def main(provider=None, out_dir: Path | None = None, oggi: dt.date | None = None
 
     u = cfg["universo"]
     uni = provider.universe(u["borse"])
-    prezzi = provider.prices(uni["ticker"].tolist() + ["SPY"])
+    monitorati = cfg.get("monitorati", [])
+    extra = [t for t in monitorati + ["SPY"] if t not in set(uni["ticker"])]
+    prezzi = provider.prices(uni["ticker"].tolist() + extra)
     spy = prezzi.get("SPY")
 
     righe = []
@@ -66,6 +68,18 @@ def main(provider=None, out_dir: Path | None = None, oggi: dt.date | None = None
     (out_dir / "storico").mkdir(exist_ok=True)
     uscita.round(4).to_csv(out_dir / "storico" / f"candidati_{data_seduta}.csv", index=False)
 
+    # prezzi giornalieri della watchlist (ultimi 30 giorni), con verifica della data
+    righe_m = []
+    for t in monitorati:
+        df = prezzi.get(t)
+        if df is None or df.empty:
+            righe_m.append({"ticker": t, "data": "N/D"})
+            continue
+        for d, r in df.tail(30).iterrows():
+            righe_m.append({"ticker": t, "data": str(d.date()), "apertura": r["Open"], "massimo": r["High"],
+                            "minimo": r["Low"], "chiusura": r["Close"], "volume": r["Volume"]})
+    pd.DataFrame(righe_m).round(4).to_csv(out_dir / "monitorati_latest.csv", index=False)
+
     tr = cfg["tracciamento"]
     log = track.append_signals(out_dir / "segnali_log.csv", s2 if seduta_ok else s2.iloc[0:0],
                                data_seduta, tr["segnali_registrati_per_seduta"])
@@ -82,6 +96,7 @@ def main(provider=None, out_dir: Path | None = None, oggi: dt.date | None = None
         "titoli_liquidi": int(len(liquidi)),
         "candidati_analizzati": int(len(cand)),
         "candidati_idonei": int(s2["idoneo"].sum()),
+        "monitorati_senza_prezzi": [t for t in monitorati if prezzi.get(t) is None],
         "fonti_ko": {"insider_N/D": int(sum(v is None for v in insider.values())),
                      "short_N/D": int(sum(v is None for v in short.values()))},
         "performance_segnali": track.summary(ev, tr["orizzonti_giorni"]),

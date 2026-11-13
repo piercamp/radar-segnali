@@ -29,6 +29,7 @@ class FakeProvider:
                               index=self.idx)
             self.px[t] = df.tail(100) if t == "T005" else df  # storico corto
         s = 400 * np.exp(np.cumsum(rng.normal(0.0004, 0.01, len(self.idx))))
+        self.px["NVDA"] = self.px["T001"].copy()
         self.px["SPY"] = pd.DataFrame({"Open": s, "High": s, "Low": s, "Close": s, "Volume": 1e8},
                                       index=self.idx)
 
@@ -78,6 +79,8 @@ def test_end_to_end(tmp_path):
     assert len(veto) >= 1 and not veto["idoneo"].any()                    # veto trimestrale rispettato
     assert rap["fonti_ko"]["insider_N/D"] == 1
 
+    m = pd.read_csv(tmp_path / "monitorati_latest.csv")
+    assert set(m["ticker"]) >= {"NVDA"}
     log = pd.read_csv(tmp_path / "segnali_log.csv")
     assert len(log) == 10 and log["ticker"].isin(ordine).all()
 
@@ -94,7 +97,7 @@ def test_completezza_bassa_non_idonea(tmp_path):
 def test_copertura_insufficiente(tmp_path):
     p = FakeProvider(OGGI)
     full = p.prices
-    p.prices = lambda tickers: {k: v for k, v in full(tickers).items() if k == "SPY" or int(k[1:]) < 100}
+    p.prices = lambda tickers: {k: v for k, v in full(tickers).items() if not k.startswith("T") or int(k[1:]) < 100}
     rap = run.main(provider=p, out_dir=tmp_path, oggi=OGGI)
     assert not rap["seduta_completa"] and rap["candidati_idonei"] == 0
 
