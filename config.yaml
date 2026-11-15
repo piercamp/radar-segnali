@@ -40,4 +40,4 @@ tracciamento:
 # Posizioni aperte: il motore pubblica i loro prezzi giornalieri degli ultimi 30 giorni,
 # usati dalle attività per controllare stop e target. Solo i ticker, nessun prezzo di carico o importo.
 # Aggiornare quando si apre o si chiude una posizione (lista vuota = []).
-monitorati: [NVDA]
+monitorati: [NVDA, MP]
