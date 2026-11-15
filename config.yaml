@@ -37,6 +37,7 @@ tracciamento:
   segnali_registrati_per_seduta: 10
   orizzonti_giorni: [1, 5, 20]
 
-# Titoli monitorati (watchlist): il motore pubblica i loro prezzi giornalieri degli ultimi 30 giorni,
-# usati dalle attività per verificare i livelli delle posizioni. Nessun prezzo di carico qui.
-monitorati: [EL, ULTA, ELF, COTY, UPS, FDX, EXPD, CHRW, COST, TGT, NVDA, MSFT, GOOGL, AVGO, AMD, TSM, PLTR, ASML]
+# Posizioni aperte: il motore pubblica i loro prezzi giornalieri degli ultimi 30 giorni,
+# usati dalle attività per controllare stop e target. Solo i ticker, nessun prezzo di carico o importo.
+# Aggiornare quando si apre o si chiude una posizione (lista vuota = []).
+monitorati: [NVDA]
