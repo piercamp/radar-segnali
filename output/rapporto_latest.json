@@ -1,11 +1,11 @@
 {
-  "generato_utc": "2026-11-19T23:20+00:00",
-  "seduta": "2026-11-19",
+  "generato_utc": "2026-11-20T23:21+00:00",
+  "seduta": "2026-11-20",
   "seduta_completa": true,
-  "titoli_universo": 6406,
-  "titoli_con_prezzi_validi": 5924,
+  "titoli_universo": 6408,
+  "titoli_con_prezzi_validi": 5927,
   "copertura_prezzi": 0.925,
-  "titoli_liquidi": 2037,
+  "titoli_liquidi": 2025,
   "candidati_analizzati": 60,
   "candidati_idonei": 60,
   "monitorati_senza_prezzi": [],
@@ -14,16 +14,16 @@
     "short_N/D": 1
   },
   "performance_segnali": {
-    "segnali_totali": 60,
+    "segnali_totali": 70,
     "1g": {
-      "segnali_misurati": 50,
-      "quota_meglio_di_spy": 0.46,
-      "extra_rendimento_medio": -0.0018
+      "segnali_misurati": 60,
+      "quota_meglio_di_spy": 0.53,
+      "extra_rendimento_medio": 0.0028
     },
     "5g": {
-      "segnali_misurati": 10,
-      "quota_meglio_di_spy": 0.6,
-      "extra_rendimento_medio": 0.0153
+      "segnali_misurati": 20,
+      "quota_meglio_di_spy": 0.65,
+      "extra_rendimento_medio": 0.0243
     },
     "20g": "dati insufficienti"
   }
